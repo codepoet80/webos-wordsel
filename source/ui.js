@@ -52,6 +52,13 @@ var WordleUI = (function () {
       node.className = node.className ? node.className + " " + c : c;
     }
   }
+  function removeClass(node, c) {
+    var parts = (node.className || "").split(" "), out = [];
+    for (var i = 0; i < parts.length; i++) {
+      if (parts[i] && parts[i] !== c) { out.push(parts[i]); }
+    }
+    node.className = out.join(" ");
+  }
   function setStateClass(node, baseClass, stateClass) {
     node.className = baseClass + (stateClass ? " " + stateClass : "");
   }
@@ -441,12 +448,46 @@ var WordleUI = (function () {
     showMessage("Reset");
   }
 
+  /* ---- theme (dark mode) ---- */
+  /* The "wb-dark" class goes on <body> so the page background and every
+     descendant (board, keyboard, toast, stats modal) pick up the dark rules in
+     styles.css. The choice is saved under Storage.NS + "prefs". */
+  var PREFS_KEY = Storage.NS + "prefs";
+  var darkMode = false;
+
+  function loadPrefs() {
+    var p = Storage.get(PREFS_KEY);
+    return (p && typeof p === "object") ? p : {};
+  }
+
+  function applyTheme() {
+    var body = document.body;
+    if (!body) { return; }
+    if (darkMode) { addClass(body, "wb-dark"); }
+    else { removeClass(body, "wb-dark"); }
+  }
+
+  function setDarkMode(on) {
+    darkMode = !!on;
+    var p = loadPrefs();
+    p.darkMode = darkMode;
+    Storage.set(PREFS_KEY, p);
+    applyTheme();
+    return darkMode;
+  }
+
+  function isDarkMode() { return darkMode; }
+
+  function toggleDarkMode() { return setDarkMode(!darkMode); }
+
   /* ---- public ---- */
   function mount(rootNode) {
     root = rootNode;
     canInput = true;
     while (root.firstChild) { root.removeChild(root.firstChild); }
     addClass(root, "wb-app");
+    darkMode = !!loadPrefs().darkMode;
+    applyTheme();
 
     var header = el("div", "wb-header");
     var title = el("h1", "wb-title");
@@ -498,7 +539,12 @@ var WordleUI = (function () {
     }
   }
 
-  return { mount: mount };
+  return {
+    mount: mount,
+    setDarkMode: setDarkMode,
+    isDarkMode: isDarkMode,
+    toggleDarkMode: toggleDarkMode
+  };
 })();
 
 if (typeof module !== "undefined" && module.exports) {

@@ -85,7 +85,15 @@ palm-install com.codepoet.wordsel_1.0.0_all.ipk
   leaves stats alone). This is a testing-only feature — strip before a public
   release if undesired.
 
+## App menu / dark mode
+
+`App.js` hosts an Enyo `AppMenu` with a "Dark Mode" `MenuCheckItem`. It calls
+`WordleUI.toggleDarkMode()`, which toggles a `wb-dark` class on `<body>` and
+persists `{darkMode: bool}` under `Storage.NS + "prefs"`. All dark colors live
+in the "Dark mode" section of `styles.css` (incl. `*-dark` flip keyframes, since
+the light ones hardcode the white starting tile).
+
 ## Deferred / not yet built
 
-Emoji share string, dark mode, colorblind mode, hard mode. The original bundle
+Emoji share string, colorblind mode, hard mode. The original bundle
 had all of these; logic can be re-derived if needed.

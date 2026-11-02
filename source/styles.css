@@ -369,3 +369,66 @@ html, body {
   font-weight: 700;
   cursor: pointer;
 }
+
+/* ===================================================================== */
+/* Dark mode                                                             */
+/* ===================================================================== */
+/* Toggled from the app menu: WordleUI puts "wb-dark" on <body>. Colors are
+   the original Wordle dark palette (still hardcoded -- no var() on webOS). */
+
+body.wb-dark {
+  background-color: #121213;
+  color: #ffffff;
+}
+.wb-dark .wb-header { border-bottom-color: #3a3a3c; }
+.wb-dark .wb-stats-btn { background-color: #818384; color: #ffffff; }
+.wb-dark .wb-message { background-color: #ffffff; color: #121213; }
+
+.wb-dark .wb-tile { border-color: #3a3a3c; color: #ffffff; }
+.wb-dark .wb-tile.wb-filled { border-color: #565758; }
+.wb-dark .wb-tile.wb-correct { background-color: #538d4e; border-color: #538d4e; }
+.wb-dark .wb-tile.wb-present { background-color: #b59f3b; border-color: #b59f3b; }
+.wb-dark .wb-tile.wb-absent  { background-color: #3a3a3c; border-color: #3a3a3c; }
+
+.wb-dark .wb-key { background-color: #818384; color: #ffffff; }
+.wb-dark .wb-key-correct { background-color: #538d4e; }
+.wb-dark .wb-key-present { background-color: #b59f3b; }
+.wb-dark .wb-key-absent  { background-color: #3a3a3c; }
+
+/* Dark flip-reveal keyframes: same shape as the light ones, but start from the
+   dark empty-tile colors so the tile doesn't flash white mid-flip. */
+@-webkit-keyframes wb-flip-correct-dark {
+  0%   { -webkit-transform: rotateX(0deg);  background-color: #121213; border-color: #565758; color: #ffffff; }
+  49%  { background-color: #121213; border-color: #565758; color: #ffffff; }
+  50%  { -webkit-transform: rotateX(90deg); background-color: #538d4e; border-color: #538d4e; color: #ffffff; }
+  100% { -webkit-transform: rotateX(0deg);  background-color: #538d4e; border-color: #538d4e; color: #ffffff; }
+}
+@-webkit-keyframes wb-flip-present-dark {
+  0%   { -webkit-transform: rotateX(0deg);  background-color: #121213; border-color: #565758; color: #ffffff; }
+  49%  { background-color: #121213; border-color: #565758; color: #ffffff; }
+  50%  { -webkit-transform: rotateX(90deg); background-color: #b59f3b; border-color: #b59f3b; color: #ffffff; }
+  100% { -webkit-transform: rotateX(0deg);  background-color: #b59f3b; border-color: #b59f3b; color: #ffffff; }
+}
+@-webkit-keyframes wb-flip-absent-dark {
+  0%   { -webkit-transform: rotateX(0deg);  background-color: #121213; border-color: #565758; color: #ffffff; }
+  49%  { background-color: #121213; border-color: #565758; color: #ffffff; }
+  50%  { -webkit-transform: rotateX(90deg); background-color: #3a3a3c; border-color: #3a3a3c; color: #ffffff; }
+  100% { -webkit-transform: rotateX(0deg);  background-color: #3a3a3c; border-color: #3a3a3c; color: #ffffff; }
+}
+.wb-dark .wb-tile.wb-flip.wb-correct {
+  -webkit-animation: wb-flip-correct-dark 500ms ease forwards;
+  animation: wb-flip-correct-dark 500ms ease forwards;
+}
+.wb-dark .wb-tile.wb-flip.wb-present {
+  -webkit-animation: wb-flip-present-dark 500ms ease forwards;
+  animation: wb-flip-present-dark 500ms ease forwards;
+}
+.wb-dark .wb-tile.wb-flip.wb-absent {
+  -webkit-animation: wb-flip-absent-dark 500ms ease forwards;
+  animation: wb-flip-absent-dark 500ms ease forwards;
+}
+
+.wb-dark .wb-modal { background-color: #121213; color: #ffffff; border-color: #3a3a3c; }
+.wb-dark .wb-dist-bar { background-color: #3a3a3c; }
+.wb-dark .wb-dist-bar.wb-dist-current { background-color: #538d4e; }
+.wb-dark .wb-modal-close { background-color: #538d4e; }

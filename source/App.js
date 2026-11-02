@@ -13,6 +13,10 @@
  * interfere with the plain-DOM board that WordleUI mounts into our node. On
  * launch we ask it to check the museum for a newer "Wordsel" and, if found, it
  * prompts the user to install via Preware.
+ *
+ * We also host the webOS app menu (Enyo AppMenu, opened by tapping the top-left
+ * corner / swiping down). It has a "Dark Mode" check item that toggles the
+ * theme through WordleUI; the choice is persisted by WordleUI itself.
  */
 
 enyo.kind({
@@ -20,7 +24,11 @@ enyo.kind({
   kind: enyo.Control,
 
   components: [
-    { kind: "Helpers.Updater", name: "updater" }
+    { kind: "Helpers.Updater", name: "updater" },
+    { kind: "AppMenu", name: "appMenu", components: [
+      { kind: "MenuCheckItem", name: "darkModeItem", caption: "Dark Mode",
+        onclick: "darkModeClick" }
+    ]}
   ],
 
   create: function () {
@@ -35,6 +43,12 @@ enyo.kind({
     if (node && !this._mounted) {
       this._mounted = true;
       WordleUI.mount(node);
+      this.$.darkModeItem.setChecked(WordleUI.isDarkMode());
     }
+  },
+
+  darkModeClick: function () {
+    var on = WordleUI.toggleDarkMode();
+    this.$.darkModeItem.setChecked(on);
   }
 });
